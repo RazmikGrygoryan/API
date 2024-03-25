@@ -28,7 +28,7 @@ def test_update_meme(update_meme, auth_token, meme_id):
     payload = {
         "id": meme_id,
         "text": "Meme111",
-        "url": "Meme",
+        "url": "Mem",
         "tags": ["Meme111"],
         "info": {"Meme": 77777}
     }
