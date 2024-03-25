@@ -34,11 +34,21 @@ def delete_meme():
     return DeleteMeme()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def auth_token(create_auth_token):
     payload = {"name": "Razmik"}
     create_auth_token.create_new_auth_token(payload)
-    yield create_auth_token.auth_token
+    return create_auth_token.auth_token
+
+
+@pytest.fixture(scope="session", autouse=True)
+def check_token_is_alive(get_token, create_auth_token, auth_token):
+    if "Token is alive." in get_token.get_alive_auth_token(auth_token):
+        pass
+    else:
+        payload = {"name": "Razmik"}
+        create_auth_token.create_new_auth_token(payload)
+        return create_auth_token.auth_token
 
 
 @pytest.fixture()
@@ -53,20 +63,11 @@ def meme_id(create_meme, auth_token):
     yield create_meme.meme_id
 
 
-@pytest.fixture(autouse=True)
-def token_is_alive(get_token, create_auth_token):
-    alive_token = get_token.get_alive_auth_token(auth_token)
-    if "Token is alive." in alive_token:
-        pass
-    else:
-        yield create_auth_token.auth_token
-
-
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def get_token():
     return GetAliveToken()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def create_auth_token():
     return CreateAuthToken()
