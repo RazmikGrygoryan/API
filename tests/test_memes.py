@@ -46,10 +46,30 @@ def test_delete_meme(delete_meme, get_meme, auth_token, meme_id):
 
 
 @pytest.mark.parametrize("invalid_payload", [
-    {1: 1},
-    {2: 1},
-    {3: "  "},
-    {4: True}
+    {
+        "text": 1,
+        "url": "Meme",
+        "tags": ["Meme111"],
+        "info": {"Meme": 77777}
+    },
+    {
+        "text": "Meme111",
+        "url": [],
+        "tags": ["Meme111"],
+        "info": {"Meme": 77777}
+    },
+    {
+        "text": "Meme111",
+        "url": "Meme",
+        "tags": ["Meme111"],
+        "info": 77777
+    },
+    {
+        "text": "Meme111",
+        "url": "Meme",
+        "tags": "  ",
+        "info": {"Meme": 77777}
+    }
 ])
 def test_failed_data_post(create_meme, auth_token, invalid_payload):
     create_meme.create_new_meme(invalid_payload, True, headers={"Authorization": auth_token})
