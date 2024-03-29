@@ -24,10 +24,11 @@ class EndPoint:
         assert self.response.status_code == 400
 
     @allure.step('Check that text is the same as sent')
-    def check_response_is_correct(self, text, info, tags):
+    def check_response_is_correct(self, text, info, tags, url):
         assert self.json['text'] == text
         assert self.json['info'] == info
         assert self.json['tags'] == tags
+        assert self.json['url'] == url
 
     @allure.step('Check that data in response')
     def check_data_in_response(self):
@@ -43,3 +44,7 @@ class EndPoint:
     @allure.step('Check that 403 Forbidden')
     def check_is_forbidden(self):
         assert self.response.status_code == 403
+
+    @allure.step('Check id is correct')
+    def check_is_id(self, id):
+        assert self.json['id'] == id
